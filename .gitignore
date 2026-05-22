@@ -4,3 +4,14 @@ node_modules/
 .vercel/
 dist/
 build/
+screenshot*.png
+x.png
+*.py
+*.bat
+*.ps1
+*.txt
+cvk_images_v1/
+images_fix/
+img/
+inject.js
+clean-urls.js

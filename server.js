@@ -7,7 +7,6 @@ const siteDir = 'c:/Users/Personal/OneDrive/Documentos/Antigravity Works/CVK';
 const brainDir = 'C:/Users/Personal/.gemini/antigravity/brain/17b0d90b-0e15-4546-bf24-7710910a634c';
 
 const mapping = {
-    '/images/logo.png': 'C:/Users/Personal/Downloads/CVK.png',
     '/images/chris-profile.png': 'chris_portrait_1778012017308.png',
     '/images/hero-fallback.png': 'hero_fallback_1778012032882.png',
     '/images/services-section.png': 'services_section_1778012307271.png',
@@ -17,7 +16,9 @@ const mapping = {
 };
 
 const server = http.createServer((req, res) => {
-    let url = decodeURI(req.url);
+    // Strip query parameters to avoid 404s on assets with version strings (e.g., style.css?v=final)
+    const cleanUrl = req.url.split('?')[0];
+    let url = decodeURI(cleanUrl);
     if (url === '/') url = '/index.html';
 
     // Check if it's an image in our mapping
@@ -53,8 +54,21 @@ const server = http.createServer((req, res) => {
             res.end('File not found');
         } else {
             let contentType = 'text/html';
-            if (url.endsWith('.css')) contentType = 'text/css';
-            if (url.endsWith('.js')) contentType = 'application/javascript';
+            if (url.endsWith('.css')) {
+                contentType = 'text/css';
+            } else if (url.endsWith('.js')) {
+                contentType = 'application/javascript';
+            } else if (url.endsWith('.png')) {
+                contentType = 'image/png';
+            } else if (url.endsWith('.jpg') || url.endsWith('.jpeg')) {
+                contentType = 'image/jpeg';
+            } else if (url.endsWith('.gif')) {
+                contentType = 'image/gif';
+            } else if (url.endsWith('.svg')) {
+                contentType = 'image/svg+xml';
+            } else if (url.endsWith('.ico')) {
+                contentType = 'image/x-icon';
+            }
             res.writeHead(200, { 'Content-Type': contentType });
             res.end(data);
         }

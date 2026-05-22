@@ -1,5 +1,5 @@
 /**
- * CVK Landscape — motion.js
+ * Reformas Integrales J.Serrano — motion.js
  * Awwwards-level Motion Design: Lenis, GSAP ScrollTrigger, Custom Cursor, Magnetic Buttons
  */
 
@@ -145,39 +145,56 @@ function initMotion() {
       if (el.classList.contains('reveal-clip-right')) startX = 40;
       if (startX !== 0) startY = 0;
       
+      const isClipUp = el.classList.contains('reveal-clip-up');
+      
       gsap.fromTo(el, 
-        { opacity: 0, y: startY, x: startX },
+        { 
+          opacity: 0, 
+          y: startY, 
+          x: startX,
+          ...(isClipUp && { clipPath: "inset(0% 0% 100% 0%)" })
+        },
         {
           opacity: 1, 
           y: 0,
           x: 0,
+          ...(isClipUp && { clipPath: "inset(0% 0% 0% 0%)" }),
           duration: 1,
           ease: "power3.out",
           scrollTrigger: {
             trigger: el,
             start: "top 90%", 
-            toggleActions: "play none none reverse"
+            toggleActions: "play none none reverse",
+            onEnter: () => el.classList.add('revealed'),
+            onLeaveBack: () => el.classList.remove('revealed')
           }
         }
       );
     });
 
     // Dedicated About Image Reveal (More robust)
-    const aboutImg = document.querySelector('.about-image-frame');
-    if (aboutImg) {
-      gsap.set(aboutImg, { opacity: 0, x: -60 });
-      gsap.to(aboutImg, {
-        opacity: 1,
-        x: 0,
-        duration: 1.4,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: aboutImg,
-          start: "top 95%",
-          toggleActions: "play none none none"
+    const aboutImgs = document.querySelectorAll('.about-image-frame');
+    aboutImgs.forEach(aboutImg => {
+      aboutImg.style.opacity = '';
+      aboutImg.style.transform = '';
+      
+      gsap.fromTo(aboutImg, 
+        { opacity: 0, x: -60, clipPath: "inset(0% 100% 0% 0%)" },
+        {
+          opacity: 1,
+          x: 0,
+          clipPath: "inset(0% 0% 0% 0%)",
+          duration: 1.4,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: aboutImg,
+            start: "top 95%",
+            toggleActions: "play none none none",
+            onEnter: () => aboutImg.classList.add('revealed')
+          }
         }
-      });
-    }
+      );
+    });
   }
 
   // 6. Contact Form Handling
@@ -193,11 +210,11 @@ function initMotion() {
       
       // Visual feedback
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending...';
+      submitBtn.textContent = 'Enviando...';
       
       // Simulate API Call
       setTimeout(() => {
-        statusMsg.textContent = 'Thank you! Your request has been sent. We will contact you shortly.';
+        statusMsg.textContent = '¡Gracias! Tu solicitud ha sido enviada. Nos pondremos en contacto contigo muy pronto.';
         statusMsg.className = 'success'; // See CSS for styling
         statusMsg.classList.remove('hidden');
         

@@ -1,5 +1,5 @@
 /**
- * CVK Landscape — app.js
+ * Reformas Integrales J.Serrano — app.js
  * Scroll animations, nav, testimonials
  */
 
@@ -29,7 +29,7 @@ menuToggle.addEventListener('click', () => {
   const isOpen = navOverlay.classList.toggle('open');
   menuToggle.classList.toggle('menu-open', isOpen);
   header.classList.toggle('menu-open', isOpen);
-  menuToggle.querySelector('.toggle-label').textContent = isOpen ? 'Close' : 'Menu';
+  menuToggle.querySelector('.toggle-label').textContent = isOpen ? 'Cerrar' : 'Menú';
   navOverlay.setAttribute('aria-hidden', String(!isOpen));
   menuToggle.setAttribute('aria-expanded', String(isOpen));
   document.body.style.overflow = isOpen ? 'hidden' : '';
@@ -40,7 +40,7 @@ overlayLinks.forEach(link => {
     navOverlay.classList.remove('open');
     menuToggle.classList.remove('menu-open');
     header.classList.remove('menu-open');
-    menuToggle.querySelector('.toggle-label').textContent = 'Menu';
+    menuToggle.querySelector('.toggle-label').textContent = 'Menú';
     navOverlay.setAttribute('aria-hidden', 'true');
     menuToggle.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
